@@ -1,0 +1,20 @@
+# Qt build files
+*.o
+*.pro.user
+*.pro.user.*
+*.qm
+.qmake.stash
+Makefile
+moc_*.cpp
+moc_*.h
+ui_*.h
+qrc_*.cpp
+moc_predefs.h
+
+# Executable
+bin/
+
+# Build directories
+build/
+debug/
+release/

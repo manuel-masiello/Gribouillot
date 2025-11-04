@@ -90,7 +90,7 @@ void ZoomableGraphicsView::wheelEvent(QWheelEvent *e)
          * for the scaleBar. To prevent this zoomOut has high floating precision.
          */
         double zoomFactor;
-        if (e->delta() < 0)
+        if (e->angleDelta().y() < 0)
             zoomFactor = zoomOutFactor;
         else
             zoomFactor = zoomInFactor;
