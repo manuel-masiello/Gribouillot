@@ -27,6 +27,7 @@ public:
     ~ZoomableGraphicsView();
 
     qreal getZoom();
+    void setMapRect(QRectF rect);
 
 public slots:
     void systemScaleChanged(qreal systemScale, QString unit);
@@ -41,6 +42,9 @@ protected:
 private:
     ScaleBar *scaleBar;
     qreal currentZoom;
+    QRectF mapRect;
+
+    void updateSceneRect();
 
     const double zoomOutFactor = 0.83333333;
     const double zoomInFactor = 1.2;

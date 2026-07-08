@@ -450,6 +450,7 @@ void Gribouillot::resetUi()
     //reset scene and delete all items including backgroundMap
     scene->clear();
     scene->setSceneRect(0, 0, 0, 0);
+    ui->zGraphicsView->setMapRect(QRectF());
 
     //new empty background map
     backgroundMap = new QGraphicsPixmapItem();
@@ -659,9 +660,9 @@ void Gribouillot::loadBackgroundMap(QString path)
         backgroundMap->setPixmap(QPixmap(path));
         ui->gribTabWidget->setMapTab(path, mapName);
 
-        /* Limit the scrollable view to the background map*/
+        /* Limit the scrollable view to the background map plus a margin*/
         QRectF viewBoundingRect = backgroundMap->boundingRect();
-        ui->zGraphicsView->setSceneRect(viewBoundingRect);
+        ui->zGraphicsView->setMapRect(viewBoundingRect);
 
         /*
          * Being the first item added to the scene, backgroundMap has the lowest

@@ -24,6 +24,9 @@ ZoomableGraphicsView::ZoomableGraphicsView(QWidget * parent) : QGraphicsView(par
     scaleBar = new ScaleBar(this);
     currentZoom = 1;
 
+    //White margin around the background map (see setMapRect)
+    setBackgroundBrush(Qt::white);
+
     //see also the Designer for other UI properties of the GraphicsView.
 
 }
@@ -38,6 +41,41 @@ ZoomableGraphicsView::~ZoomableGraphicsView()
 qreal ZoomableGraphicsView::getZoom()
 {
     return currentZoom;
+}
+
+
+/**
+ * @brief   Limit the scrollable area to the background map plus a margin.
+ * @details The margin is half a viewport wide, so the view can be scrolled
+ *          until the borders of the map reach the center of the view but not
+ *          further: at least one point of the map always stands at the center.
+ */
+void ZoomableGraphicsView::setMapRect(QRectF rect)
+{
+    mapRect = rect;
+    updateSceneRect();
+}
+
+
+/**
+ * @brief   Recompute the scrollable area, which depends on the size of the
+ *          viewport in scene coordinates (see setMapRect).
+ * @details Must be called again when the zoom or the viewport size changes.
+ */
+void ZoomableGraphicsView::updateSceneRect()
+{
+    if ( mapRect.isNull() )
+        setSceneRect(QRectF());//follow the sceneRect of the scene
+
+    else
+    {
+        //Half a viewport, in scene coordinates
+        qreal marginW = viewport()->width()/currentZoom/2;
+        qreal marginH = viewport()->height()/currentZoom/2;
+
+        setSceneRect(mapRect.adjusted(-marginW, -marginH, marginW, marginH));
+    }
+
 }
 
 /********************* SLOTS *********************/
@@ -71,6 +109,9 @@ void ZoomableGraphicsView::resizeEvent(QResizeEvent *e)
     scaleBar->move(25, height()-45);
 
     QGraphicsView::resizeEvent(e);
+
+    //The scrolling margin around the map is half a viewport wide
+    updateSceneRect();
 }
 
 
@@ -97,6 +138,9 @@ void ZoomableGraphicsView::wheelEvent(QWheelEvent *e)
 
         scale(zoomFactor, zoomFactor);
         currentZoom*=zoomFactor;//qDebug() << "zoom: " << currentZoom;
+
+        //The scrolling margin around the map is half a viewport wide
+        updateSceneRect();
 
         //Tell scalebar of the zoom change.
         scaleBar->zoomChanged(zoomFactor, currentZoom);
