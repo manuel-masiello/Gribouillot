@@ -10,6 +10,7 @@
  */
 
 #include <QtWidgets>
+#include <QtMath>
 #include <QDomDocument>
 #include <QGraphicsItem>
 #include <QXmlStreamWriter>
@@ -721,6 +722,50 @@ void GribouillotLayer::drawBisection(QColor penColor, int penWidth, QLineF58 sel
 
         drawLineFromSegment(penColor, penWidth, bisectionVector);
 
+    }
+
+}
+
+
+/**
+ * @brief   draw the 2 tangents to the currently selected circle passing
+ *          by a given point outside of the circle
+ */
+void GribouillotLayer::drawTangentsToCircle(QColor penColor, int penWidth, QPointF point,
+                                            Item_circle* selectedCircle)
+{
+    if (selectedCircle == nullptr)
+        return;
+
+    QPointF center = selectedCircle->scenePos();
+    qreal radius = selectedCircle->getRadius();
+    qreal distance = QLineF(center, point).length();
+
+    if (distance <= radius)
+    {
+        QMessageBox::warning(this, tr("Drawing error"),
+                             tr("The point must be outside of the circle."),
+                             QMessageBox::Ok);
+        return;
+    }
+
+    /*
+     * Seen from the center, the 2 tangency points stand at ±phi from the
+     * direction of the external point, with cos(phi) = radius/distance.
+     */
+    qreal theta = qAtan2(point.y()-center.y(), point.x()-center.x());
+    qreal phi = qAcos(radius/distance);
+
+    for (qreal angle : {theta-phi, theta+phi})
+    {
+        QPointF tangencyPoint = center + radius*QPointF(qCos(angle), qSin(angle));
+        drawLineFromSegment(penColor, penWidth, QLineF(point, tangencyPoint));
+        /*
+         * The new tangent passes below the clicked position, so it would be
+         * selected by Scene in place of the working circle when the user picks
+         * up another external point (see drawPerpendicular).
+         */
+        itemsList.last()->setEnabled(false);//Must be done here because of signal race condition
     }
 
 }

@@ -25,6 +25,7 @@ enum GribouillotItem {
                       HORIZONTAL = QGraphicsItem::UserType + 16,
                       VERTICAL = QGraphicsItem::UserType + 17,
                       LINE_FROMANGLE = QGraphicsItem::UserType + 18,
+                      TANGENT_TOCIRCLE = QGraphicsItem::UserType + 19,
 
                       CIRCLE = QGraphicsItem::UserType + 20,
                       CIRCLE_FROMCENTERPOINT = QGraphicsItem::UserType + 21,

@@ -191,6 +191,7 @@ private slots:
     void on_actionHorizontalLine_triggered();
     void on_actionVerticalLine_triggered();
     void on_actionAngleLine_triggered();
+    void on_actionTangentToCircle_triggered();
 
     void on_actionCircleCenterPoint_triggered();
     void on_actionCircleRadiusValue_triggered();

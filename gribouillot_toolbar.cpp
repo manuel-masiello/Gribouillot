@@ -80,6 +80,21 @@ void Gribouillot::newSceneClickPreSelect(QPointF position)
             }
             break;
 
+        case TANGENT_TOCIRCLE:
+            if( scene->isOnlySelected({CIRCLE}, 1) )
+            {
+                //A circle was previously chose by user
+                Item_circle* selectedCircle = qgraphicsitem_cast<Item_circle*>(
+                                                        scene->selectedItems().last());
+                currentLayer->drawTangentsToCircle(drawingColor, drawingWidth,
+                                                   position, selectedCircle);
+
+                selectedCircle->setSelected(true);//re-select user's circle
+
+                /*don't reset tool so several tangent pairs can be drawn in serie.*/
+            }
+            break;
+
         case CIRCLE_FROMSELECTEDRADIUS:
             if( scene->isOnlySelected({SEGMENT}, 1) )
             {//A radius was previously selected. This click defines the side of the center.
@@ -251,6 +266,11 @@ void Gribouillot::newSceneClickPostSelect(QPointF position)
         case PARALLEL:
         case PERPENDICULAR:
             if( scene->isOnlySelected({SEGMENT, LINE}, 1) )
+                moreDrawingTips();//just display next hint message
+            break;
+
+        case TANGENT_TOCIRCLE:
+            if( scene->isOnlySelected({CIRCLE}, 1) )
                 moreDrawingTips();//just display next hint message
             break;
 
@@ -568,6 +588,9 @@ void Gribouillot::keyEscFromScene()
             break;
         case LINE_FROMANGLE:
             on_actionAngleLine_triggered();
+            break;
+        case TANGENT_TOCIRCLE:
+            on_actionTangentToCircle_triggered();
             break;
         case CIRCLE_FROMCENTERPOINT:
             on_actionCircleCenterPoint_triggered();
@@ -1187,6 +1210,23 @@ void Gribouillot::on_actionAngleLine_triggered()
     drawingTips= {tr("Angle: select the reference line"),
                   tr("Angle: pick up the center of the angle"),
                   tr("Angle: click to draw.")};
+
+    statusBar()->showMessage(drawingTips[0]);
+
+}
+
+
+/**
+ * @brief   Draw the 2 tangents to a selected circle passing through a point
+ */
+void Gribouillot::on_actionTangentToCircle_triggered()
+{
+    setDrawingView();
+    scene->clearSelection();
+    currentDrawing = TANGENT_TOCIRCLE;
+    scene->enableOnlyItems({CIRCLE});
+    drawingTips= {tr("Tangents: select the reference circle."),
+                  tr("Tangents: pick up a point outside of the circle.")};
 
     statusBar()->showMessage(drawingTips[0]);
 

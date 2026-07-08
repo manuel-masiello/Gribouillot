@@ -107,6 +107,7 @@ Gribouillot::Gribouillot(QWidget *parent) :
     drawingGroup->addAction(ui->actionPerpendicular);
     drawingGroup->addAction(ui->actionBisection);
     drawingGroup->addAction(ui->actionAngleLine);
+    drawingGroup->addAction(ui->actionTangentToCircle);
 
     drawingGroup->addAction(ui->actionCircleCenterPoint);
     drawingGroup->addAction(ui->actionCircleSelectRadius);

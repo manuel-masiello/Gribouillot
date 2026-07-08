@@ -136,6 +136,7 @@
    <addaction name="actionPerpendicular"/>
    <addaction name="actionBisection"/>
    <addaction name="actionAngleLine"/>
+   <addaction name="actionTangentToCircle"/>
    <addaction name="separator"/>
    <addaction name="actionDrawCenter"/>
    <addaction name="actionCircleCenterPoint"/>
@@ -452,6 +453,21 @@
    </property>
    <property name="toolTip">
     <string>Draw the line intersecting the selected line at the given point, at the given angle</string>
+   </property>
+  </action>
+  <action name="actionTangentToCircle">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="gribouillot.qrc">
+     <normaloff>:/Resources/Icons/line-tangent-circle.png</normaloff>:/Resources/Icons/line-tangent-circle.png</iconset>
+   </property>
+   <property name="text">
+    <string>Tangents to circle</string>
+   </property>
+   <property name="toolTip">
+    <string>Draw the 2 lines tangent to the selected circle and passing through a point</string>
    </property>
   </action>
   <action name="actionLoadPicture">

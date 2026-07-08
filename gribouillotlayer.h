@@ -70,6 +70,8 @@ public:
     void drawParallel(QColor penColor, int penWidth, QPointF point, QLineF58 selectedLine);
     void drawPerpendicular(QColor penColor, int penWidth, QPointF point, Item_segment *selectedSegment);
     void drawBisection(QColor penColor, int penWidth, QLineF58 selectedLine);
+    void drawTangentsToCircle(QColor penColor, int penWidth, QPointF point,
+                              Item_circle* selectedCircle);
 
     //Circles drawing
     void drawCircle(QColor penColor, int penWidth, QPointF center, qreal radius);
