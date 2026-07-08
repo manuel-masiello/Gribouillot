@@ -72,6 +72,15 @@ Gribouillot::Gribouillot(QWidget *parent) :
     ui->zGraphicsView->setScene(scene);
     drawingCursor = QCursor(QPixmap(":/Resources/Icons/cursor-drawing.png"));
 
+    /*
+     * Permanent reminder, on the right of the status bar, that panning is
+     * always available with the middle mouse button (see ZoomableGraphicsView).
+     */
+    QLabel* panHint = new QLabel("<img src=':/Resources/Icons/cursor-openhand.png'>&nbsp;"
+                                 +tr("middle button")+"&nbsp;");
+    panHint->setToolTip(tr("Move around the map at any time by holding the middle mouse button."));
+    statusBar()->addPermanentWidget(panHint);
+
     //scene
     connect (scene, &GribouillotScene::selectionChanged, this, &Gribouillot::sceneSelectionChanged);
     connect (scene, &GribouillotScene::newMouseClickPreSelect, this, &Gribouillot::newSceneClickPreSelect);

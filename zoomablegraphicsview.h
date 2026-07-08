@@ -35,6 +35,10 @@ public slots:
 
 protected:
     void resizeEvent(QResizeEvent *e) Q_DECL_OVERRIDE;
+    void mousePressEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
+    void mouseMoveEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
+    void mouseReleaseEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
+    void mouseDoubleClickEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
 #ifndef QT_NO_WHEELEVENT
     void wheelEvent(QWheelEvent *e) Q_DECL_OVERRIDE;
 #endif
@@ -43,6 +47,12 @@ private:
     ScaleBar *scaleBar;
     qreal currentZoom;
     QRectF mapRect;
+
+    //Panning with the middle mouse button hold down
+    bool midButtonPanning = false;
+    QPoint lastPanPoint;
+    QCursor savedViewportCursor;
+    bool viewportHadCursor = false;
 
     void updateSceneRect();
 

@@ -915,7 +915,8 @@ void Gribouillot::on_actionCursorSelect_triggered()
  */
 void Gribouillot::on_actionCursorDrag_triggered()
 {
-    statusBar()->clearMessage();
+    statusBar()->showMessage(
+        tr("Tip: you can also move around with any tool by holding the middle mouse button."));
     clearView();
     currentDrawing = NONE;
 

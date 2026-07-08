@@ -10,6 +10,7 @@
 #include <QGraphicsItem>
 #include <QDebug>
 #include <QtMath>
+#include <QScrollBar>
 #include <QWheelEvent>
 
 #include "zoomablegraphicsview.h"
@@ -116,40 +117,112 @@ void ZoomableGraphicsView::resizeEvent(QResizeEvent *e)
 
 
 /**
+ * @brief   Pan the view while the middle mouse button is hold down, like in
+ *          "Cursor Drag" mode but whatever the current tool.
+ */
+void ZoomableGraphicsView::mousePressEvent(QMouseEvent *e)
+{
+    if (e->button() == Qt::MiddleButton)
+    {
+        midButtonPanning = true;
+        lastPanPoint = e->pos();
+
+        //Show a closed hand during the panning, restore the cursor afterwards
+        viewportHadCursor = viewport()->testAttribute(Qt::WA_SetCursor);
+        savedViewportCursor = viewport()->cursor();
+        viewport()->setCursor(Qt::ClosedHandCursor);
+
+        e->accept();
+        return;//don't forward to scene, no item must react to this click
+    }
+
+    QGraphicsView::mousePressEvent(e);
+}
+
+
+void ZoomableGraphicsView::mouseMoveEvent(QMouseEvent *e)
+{
+    if (midButtonPanning)
+    {
+        QPoint delta = e->pos() - lastPanPoint;
+        lastPanPoint = e->pos();
+
+        //Scrolling is naturally limited by the sceneRect (see setMapRect)
+        horizontalScrollBar()->setValue(horizontalScrollBar()->value() - delta.x());
+        verticalScrollBar()->setValue(verticalScrollBar()->value() - delta.y());
+
+        e->accept();
+        return;
+    }
+
+    QGraphicsView::mouseMoveEvent(e);
+}
+
+
+void ZoomableGraphicsView::mouseReleaseEvent(QMouseEvent *e)
+{
+    if (e->button() == Qt::MiddleButton && midButtonPanning)
+    {
+        midButtonPanning = false;
+
+        if (viewportHadCursor)
+            viewport()->setCursor(savedViewportCursor);
+        else
+            viewport()->unsetCursor();
+
+        e->accept();
+        return;
+    }
+
+    QGraphicsView::mouseReleaseEvent(e);
+}
+
+
+/**
+ * @brief   A quick second middle-click arrives as a double-click event; treat
+ *          it as a new panning start instead of forwarding it to the scene.
+ */
+void ZoomableGraphicsView::mouseDoubleClickEvent(QMouseEvent *e)
+{
+    if (e->button() == Qt::MiddleButton)
+    {
+        mousePressEvent(e);
+        return;
+    }
+
+    QGraphicsView::mouseDoubleClickEvent(e);
+}
+
+
+/**
  * @brief   Handles mouse wheel events concerning the graphicsView.
- * @details Implements zooming in or out upon holding CTRL + mouse wheel
+ * @details Implements zooming in or out upon rolling the mouse wheel.
  *          Also changes the zoom level of the red & white scalebar.
  */
 #ifndef QT_NO_WHEELEVENT
 void ZoomableGraphicsView::wheelEvent(QWheelEvent *e)
 {
-    if (e->modifiers() & Qt::ControlModifier)
-    {
-        /**
-         * Warning: Combining numerous successive zoom In and Out can yield to
-         * side-effects due to the floating point operations involved, particularly
-         * for the scaleBar. To prevent this zoomOut has high floating precision.
-         */
-        double zoomFactor;
-        if (e->angleDelta().y() < 0)
-            zoomFactor = zoomOutFactor;
-        else
-            zoomFactor = zoomInFactor;
-
-        scale(zoomFactor, zoomFactor);
-        currentZoom*=zoomFactor;//qDebug() << "zoom: " << currentZoom;
-
-        //The scrolling margin around the map is half a viewport wide
-        updateSceneRect();
-
-        //Tell scalebar of the zoom change.
-        scaleBar->zoomChanged(zoomFactor, currentZoom);
-
-        e->accept();
-
-    }
+    /**
+     * Warning: Combining numerous successive zoom In and Out can yield to
+     * side-effects due to the floating point operations involved, particularly
+     * for the scaleBar. To prevent this zoomOut has high floating precision.
+     */
+    double zoomFactor;
+    if (e->angleDelta().y() < 0)
+        zoomFactor = zoomOutFactor;
     else
-        QGraphicsView::wheelEvent(e);
+        zoomFactor = zoomInFactor;
+
+    scale(zoomFactor, zoomFactor);
+    currentZoom*=zoomFactor;//qDebug() << "zoom: " << currentZoom;
+
+    //The scrolling margin around the map is half a viewport wide
+    updateSceneRect();
+
+    //Tell scalebar of the zoom change.
+    scaleBar->zoomChanged(zoomFactor, currentZoom);
+
+    e->accept();
 
 }
 #endif

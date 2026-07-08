@@ -548,7 +548,7 @@
     <string>Cursor Drag</string>
    </property>
    <property name="toolTip">
-    <string>Move around the map, you can not select items {k}</string>
+    <string>Move around the map, you can not select items {k}. Tip: also works with any tool by holding the middle mouse button.</string>
    </property>
    <property name="shortcut">
     <string>K</string>
