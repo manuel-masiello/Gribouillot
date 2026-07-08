@@ -1,5 +1,34 @@
 # Gribouillot
 A software to draw geometric figures on a map, with a layer system and powerful functionalities.
+It was originally created to help people in search of the Golden Owl ("Chouette d'Or"), a famous
+French treasure hunt.
+
+## About this fork
+
+This repository is an **actively maintained fork** of
+[Fr3nchK1ss/Gribouillot](https://github.com/Fr3nchK1ss/Gribouillot), the original project by
+Ludovic A., whose last activity dates back to **October 2020 (version 2.0)**.
+
+Since the upstream project does not appear to be maintained anymore, development continues here
+instead of through pull requests to the parent. The approach to keep the tool alive:
+
+- **Modernization**: port to Qt6 (Qt5 remains supported), fixes for current systems;
+- **New features**: e.g. the *ellipse from foci* drawing tool;
+- **Distribution**: Linux, Windows and macOS binaries built automatically by GitHub Actions
+  (see [Releases](https://github.com/manuel-masiello/Gribouillot/releases));
+- Same GPL3 license as the original project.
+
+Issues and contributions are welcome on this repository.
+
+## Download
+
+- **Current versions**: grab the binaries from the
+  [Releases page](https://github.com/manuel-masiello/Gribouillot/releases). They are built
+  automatically from the sources by the [CI workflow](.github/workflows/build.yml)
+  (AppImage for Linux, zip for Windows, dmg for macOS).
+- **Legacy version 2.0**: the files in [`bin/`](bin/) (`Gribouillot_2.0_linux64.AppImage`,
+  `Gribouillot_2.0_win32.zip`) are the **old binaries built by the upstream project** around
+  2018-2020, with Qt5. They are kept for reference; see [`bin/README.md`](bin/README.md).
 
 ## Build Instructions
 

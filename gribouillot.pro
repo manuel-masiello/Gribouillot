@@ -3,6 +3,9 @@ QT += core gui widgets xml
 TARGET = gribouillot
 TEMPLATE = app
 
+VERSION = 2.1.0
+DEFINES += APP_VERSION=\\\"$$VERSION\\\"
+
 CONFIG += c++11
 
 # Définir le répertoire de sortie

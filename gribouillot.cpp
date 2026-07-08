@@ -1057,12 +1057,18 @@ void Gribouillot::on_actionAbout_Grib_triggered()
 {
     QMessageBox::about(this,
                        tr("About Gribouillot"),
-                       tr(
+                       "<p><b>Gribouillot "+QString(APP_VERSION)+"</b></p>"
+                       +tr(
     "<p>Gribouillot is an open source application under GPL3 license. Please refer to "
     "<a href=\"http://www.gnu.org/licenses/\">http://www.gnu.org/licenses/</a> for the license details."
     "<p><br/>This software was created with the first intent to help people in search of the "
     "Golden Owl, a famous French treasure.<br/>"
-    "Author : <b>Ludovic A.</b></p>"));
+    "Original author : <b>Ludovic A.</b> (versions up to 2.0)</p>"
+    "<p>This version is developed and maintained at "
+    "<a href=\"https://github.com/manuel-masiello/Gribouillot\">manuel-masiello/Gribouillot</a>, "
+    "an active fork of the original project "
+    "<a href=\"https://github.com/Fr3nchK1ss/Gribouillot\">Fr3nchK1ss/Gribouillot</a>, "
+    "unmaintained since 2020.</p>"));
 }
 
 
