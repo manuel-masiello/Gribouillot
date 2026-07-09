@@ -22,7 +22,7 @@ Issues and contributions are welcome on this repository.
 
 ## Download
 
-**Latest release: [v2.1.0](https://github.com/manuel-masiello/Gribouillot/releases/tag/v2.1.0)** —
+**Latest release: [v2.2.0](https://github.com/manuel-masiello/Gribouillot/releases/tag/v2.2.0)** —
 binaries for Linux (AppImage), Windows (zip) and macOS (dmg), built automatically from the
 sources by the [CI workflow](.github/workflows/build.yml). All releases are listed on the
 [Releases page](https://github.com/manuel-masiello/Gribouillot/releases).
