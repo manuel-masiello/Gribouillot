@@ -87,6 +87,7 @@ void GribouillotLayer::initLayer()
     connect (this, &GribouillotLayer::newLayerName, static_cast<Gribouillot*>(parent()), &Gribouillot::doChangeLayerName);
     connect (this, &GribouillotLayer::deleteLayer, static_cast<Gribouillot*>(parent()), &Gribouillot::doDeleteLayer);
     connect (this, &GribouillotLayer::addItemToScene, static_cast<Gribouillot*>(parent()), &Gribouillot::doAddItemToScene);
+    connect (this, &GribouillotLayer::itemAdded, static_cast<Gribouillot*>(parent()), &Gribouillot::doItemAdded);
     connect (visibilityBtt, &QPushButton::clicked, this, &GribouillotLayer::toggleVisibility);
 
 }
@@ -152,7 +153,34 @@ void GribouillotLayer::addItemToLayer(QGraphicsItem *item)
     itemsList.append(item);
     //Tell the scene
     emit addItemToScene(item);
+    emit itemAdded(this, item);
 
+}
+
+/**
+ * @brief   Re-attach a previously detached item (used by undo/redo).
+ */
+void GribouillotLayer::attachItem(QGraphicsItem *item, int index)
+{
+    if (index < 0 || index > itemsList.size())
+        itemsList.append(item);
+    else
+        itemsList.insert(index, item);
+
+    item->setOpacity((qreal)ui->opacitySlider->value()/100);
+    item->setVisible(areItemsVisible);
+
+    emit addItemToScene(item);
+}
+
+/**
+ * @brief   Remove an item from the scene and the layer, without deleting it
+ *          (ownership passes to the caller, used by undo/redo).
+ */
+void GribouillotLayer::detachItem(QGraphicsItem *item)
+{
+    item->scene()->removeItem(item);
+    itemsList.removeOne(item);
 }
 
 
@@ -363,31 +391,6 @@ bool GribouillotLayer::writeXML()
 
 
 /**
- * @brief   Del key pressed: delete items selected by user.
- * \return  true if at least one item was deleted
- */
-int GribouillotLayer::deleteSelectedItems()
-{
-    int deletedItems = 0;//keep count to inform user.
-
-    //delete the layer items selected in the view
-    foreach(QGraphicsItem* item, itemsList)
-    {
-        if (item->isSelected())
-        {
-            item->scene()->removeItem(item);
-            itemsList.removeOne(item);
-            delete item;
-            deletedItems++;
-        }
-    }
-
-    return deletedItems;
-
-}
-
-
-/**
  * @brief   Space key pressed: select next item in list.
  * \return  true if at least one item was deleted
  */
@@ -461,14 +464,14 @@ void GribouillotLayer::on_deleteLayerTlBtt_clicked()
     int ret = QMessageBox::warning(this,
                                    tr("Confirm removal"),
                                    tr("Do you really want to delete this layer?"
-                                      " The file on disk will deleted too."),
+                                      " The file on disk will be kept as a .xml.bak backup."),
                                    QMessageBox::Ok | QMessageBox::Cancel);
 
     if (ret == QMessageBox::Ok)
     {
         QString filename = label+".xml";
-        QFile file(filename);
-        file.remove();
+        QFile::remove(filename+".bak");//overwrite a previous backup
+        QFile::rename(filename, filename+".bak");
 
         emit deleteLayer();
     }

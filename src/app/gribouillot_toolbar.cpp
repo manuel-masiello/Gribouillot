@@ -541,11 +541,14 @@ void Gribouillot::showDrawContextMenu(QPointF scenePos)
  */
 void Gribouillot::keyDeleteFromScene()
 {
-    int count = currentLayer->deleteSelectedItems();
-    if (count > 0)
-        statusBar()->showMessage(QString::number(count) +
+    QList<QGraphicsItem*> items = currentLayer->selectedItems();
+    if (!items.isEmpty())
+    {
+        undoStack->push(new DeleteItemsCommand(currentLayer, items));
+        statusBar()->showMessage(QString::number(items.count()) +
                                  tr(" item(s) deleted."));
-    else if (count == 0)
+    }
+    else
         userCanNotDo("delete");
 
 }

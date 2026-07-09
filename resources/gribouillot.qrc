@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/">
+        <file alias="Resources/Icons/edit-undo.png">icons/edit-undo.png</file>
+        <file alias="Resources/Icons/edit-redo.png">icons/edit-redo.png</file>
         <file alias="Resources/Icons/image-x-generic.png">icons/image-x-generic.png</file>
         <file alias="Resources/Icons/tab-new.png">icons/tab-new.png</file>
         <file alias="Resources/Icons/visibility.png">icons/visibility.png</file>

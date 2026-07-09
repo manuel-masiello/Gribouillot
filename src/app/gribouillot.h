@@ -16,7 +16,9 @@
 #include <QGraphicsView>
 #include <QSpinBox>
 #include <QTimer>
+#include <QUndoStack>
 
+#include "commands.h"
 #include "dlg_setupgps.h"
 #include "dlg_spiral.h"
 #include "gribouillotlayer.h"
@@ -46,6 +48,7 @@ public slots:
     void doChangeLayerName(QString label);
     void doDeleteLayer();
     void doAddItemToScene(QGraphicsItem*item);
+    void doItemAdded(GribouillotLayer* layer, QGraphicsItem* item);
 
 protected:
     void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
@@ -56,6 +59,7 @@ private:
     int restrictedActions;
     GribouillotScene* scene;
     Minimap *minimap;
+    QUndoStack* undoStack;
 
     //Autosave in mins
     QTimer *timer;

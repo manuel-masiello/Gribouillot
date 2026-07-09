@@ -28,6 +28,7 @@ INCLUDEPATH += \
 # Sources
 SOURCES += \
     src/app/main.cpp \
+    src/app/commands.cpp \
     src/app/gribouillot.cpp \
     src/app/gribouillot_toolbar.cpp \
     src/app/gribouillotlayer.cpp \
@@ -68,6 +69,7 @@ SOURCES += \
 # Headers
 HEADERS += \
     src/app/main.h \
+    src/app/commands.h \
     src/app/gribouillot.h \
     src/app/gribouillotitem.h \
     src/app/gribouillotlayer.h \

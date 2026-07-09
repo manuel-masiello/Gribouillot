@@ -54,6 +54,11 @@ public:
     bool writeXML();
     void loadXML(QString path);
 
+    //Undo/redo support
+    void attachItem(QGraphicsItem* item, int index = -1);
+    void detachItem(QGraphicsItem* item);
+    int indexOfItem(QGraphicsItem* item) const { return itemsList.indexOf(item); }
+
     //Points drawing
     void drawPoint(QColor penColor, int penWidth, QPointF position, bool askWeight);
     void drawPoint(QColor penColor, int penWidth, QPointF position, int weight=0);
@@ -104,13 +109,13 @@ public:
     void drawPixmap(bool doCopy);
 
 public slots:
-    int deleteSelectedItems();
     void selectNextItem();
 
 signals:
     void newLayerName(QString label);
     void deleteLayer();
     void addItemToScene(QGraphicsItem*);
+    void itemAdded(GribouillotLayer* layer, QGraphicsItem* item);
 
 private slots:
     void on_layerNameTlBtt_clicked();
