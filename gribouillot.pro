@@ -3,7 +3,7 @@ QT += core gui widgets xml
 TARGET = gribouillot
 TEMPLATE = app
 
-VERSION = 2.2.0
+VERSION = 2.2.1
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 
 CONFIG += c++11

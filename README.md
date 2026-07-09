@@ -24,7 +24,7 @@ Any remark, bug report or suggestion is welcome — feel free to open an issue o
 
 ## Download
 
-**Latest release: [v2.2.0](https://github.com/ElsewareChouette/Gribouillot/releases/tag/v2.2.0)** —
+**Latest release: [v2.2.1](https://github.com/ElsewareChouette/Gribouillot/releases/tag/v2.2.1)** —
 binaries for Linux (AppImage), Windows (zip) and macOS (dmg), built automatically from the
 sources by the [CI workflow](.github/workflows/build.yml). All releases are listed on the
 [Releases page](https://github.com/ElsewareChouette/Gribouillot/releases).
